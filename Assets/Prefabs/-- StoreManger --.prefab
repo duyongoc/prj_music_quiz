@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &486297774432849894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 486297774432849892}
+  - component: {fileID: 486297774432849893}
+  m_Layer: 0
+  m_Name: -- StoreManger --
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &486297774432849892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486297774432849894}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &486297774432849893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486297774432849894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 489e961593c63bd4a87b79bc5afcc23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listAllAudio:
+  - listAudio:
+    - {fileID: 8300000, guid: f5eb0015dd67b4f4e9fb9bd175b78ae7, type: 3}
+    - {fileID: 8300000, guid: ae83ff66fecaf3947a5080061dcd889f, type: 3}
+    - {fileID: 8300000, guid: f5be9b20f2541c14d8404c7e506fe02f, type: 3}
+    - {fileID: 8300000, guid: 7902933cb997f9c4fbb5c1f1492b1035, type: 3}
+    - {fileID: 8300000, guid: fb9c882289c340e4ba68504c625d4991, type: 3}
+  - listAudio:
+    - {fileID: 8300000, guid: c4495d828fee0a344947a223e611296a, type: 3}
+    - {fileID: 8300000, guid: b00ed90a846e9994d810c82782e80b86, type: 3}
+    - {fileID: 8300000, guid: b542598c540b45e4c94186613e4688bc, type: 3}
+    - {fileID: 8300000, guid: c3698d8236955854a91276f296f84efe, type: 3}
+    - {fileID: 8300000, guid: a7932908bf6fdc94f8a9ab85f36d7fca, type: 3}
+  - listAudio:
+    - {fileID: 8300000, guid: 5a967479ebdda35439351a9b84c759b7, type: 3}
+    - {fileID: 8300000, guid: 76fa176c7b542c64cb8d7371fdb2079a, type: 3}
+    - {fileID: 8300000, guid: 422d7498bd8fa334fa7fe93b82dd45ac, type: 3}
+    - {fileID: 8300000, guid: b63dc00073b40f649a3ddcead9700bcd, type: 3}
+    - {fileID: 8300000, guid: dc43ad56663a35d42ae0f88bfcc16d12, type: 3}
+  currentListAudio: []
+  listAllSprite:
+  - listSprite:
+    - {fileID: 21300000, guid: 015178aa261e0b944b1c2eab6104dc96, type: 3}
+    - {fileID: 21300000, guid: 276ee6d6b8f066c40b61d9a868011cce, type: 3}
+    - {fileID: 21300000, guid: e81a4af98bece0e43b76a5e950d73464, type: 3}
+    - {fileID: 21300000, guid: 7808c61f339d9ed49a7944ead5e3c11c, type: 3}
+    - {fileID: 21300000, guid: e80830c450d7fe24fb029bfd521aedcc, type: 3}
+  - listSprite:
+    - {fileID: 21300000, guid: d7a59645a0d59c248a65424321240037, type: 3}
+    - {fileID: 21300000, guid: 90ef8a82b6438cf4f8c000167aeb987f, type: 3}
+    - {fileID: 21300000, guid: 7b7860df119ee3241b46f26778831baf, type: 3}
+    - {fileID: 21300000, guid: ea4f952b5ab06a141a88100172dca3fb, type: 3}
+    - {fileID: 21300000, guid: 4847cb426579e884c8096a7cb5dfabff, type: 3}
+  - listSprite:
+    - {fileID: 21300000, guid: efa44a54a69c7b840a1d3454b2cd1b12, type: 3}
+    - {fileID: 21300000, guid: 1df674c6e6072184ebd41b63acd5a9af, type: 3}
+    - {fileID: 21300000, guid: c613928b2342d2f499b33acc54bbd93c, type: 3}
+    - {fileID: 21300000, guid: aa8a1c9560edd354b91f230c73b2aa27, type: 3}
+    - {fileID: 21300000, guid: 52a7a7d011068b84cb97ea90054c0d20, type: 3}
+  currentListSprite: []
+  arrSpriteBG:
+  - {fileID: 21300000, guid: f218ea3a06dcdaa4f99fbb5a3f05a362, type: 3}
+  - {fileID: 21300000, guid: f206892067b8e7446849258c3cf26b00, type: 3}
+  - {fileID: 21300000, guid: e5392923b672bc04db9255cb193d7a33, type: 3}
+  - {fileID: 21300000, guid: 502e3b222569dc140bfd5ce9d4327fbc, type: 3}
+  - {fileID: 21300000, guid: 2632b637d2ce70f4bbb23e42b5358d6c, type: 3}
+  - {fileID: 21300000, guid: 7a98c7aae697cbc439ac2b7bfa0aad7c, type: 3}
+  - {fileID: 21300000, guid: 4438eebd2cbb24144acd3955c85eda78, type: 3}
+  - {fileID: 21300000, guid: 6ed3ac162bb160e4b91e410c1bda22dc, type: 3}
+  txtPlatform: {fileID: 0}
+  playLists: []
+  idPlayListQuiz: 
+  currentListQuestion: []
