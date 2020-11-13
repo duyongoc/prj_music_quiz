@@ -43,25 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 489e961593c63bd4a87b79bc5afcc23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listAllAudio:
-  - listAudio:
-    - {fileID: 8300000, guid: f5eb0015dd67b4f4e9fb9bd175b78ae7, type: 3}
-    - {fileID: 8300000, guid: ae83ff66fecaf3947a5080061dcd889f, type: 3}
-    - {fileID: 8300000, guid: f5be9b20f2541c14d8404c7e506fe02f, type: 3}
-    - {fileID: 8300000, guid: 7902933cb997f9c4fbb5c1f1492b1035, type: 3}
-    - {fileID: 8300000, guid: fb9c882289c340e4ba68504c625d4991, type: 3}
-  - listAudio:
-    - {fileID: 8300000, guid: c4495d828fee0a344947a223e611296a, type: 3}
-    - {fileID: 8300000, guid: b00ed90a846e9994d810c82782e80b86, type: 3}
-    - {fileID: 8300000, guid: b542598c540b45e4c94186613e4688bc, type: 3}
-    - {fileID: 8300000, guid: c3698d8236955854a91276f296f84efe, type: 3}
-    - {fileID: 8300000, guid: a7932908bf6fdc94f8a9ab85f36d7fca, type: 3}
-  - listAudio:
-    - {fileID: 8300000, guid: 5a967479ebdda35439351a9b84c759b7, type: 3}
-    - {fileID: 8300000, guid: 76fa176c7b542c64cb8d7371fdb2079a, type: 3}
-    - {fileID: 8300000, guid: 422d7498bd8fa334fa7fe93b82dd45ac, type: 3}
-    - {fileID: 8300000, guid: b63dc00073b40f649a3ddcead9700bcd, type: 3}
-    - {fileID: 8300000, guid: dc43ad56663a35d42ae0f88bfcc16d12, type: 3}
+  listAllAudio: []
   currentListAudio: []
   listAllSprite:
   - listSprite:

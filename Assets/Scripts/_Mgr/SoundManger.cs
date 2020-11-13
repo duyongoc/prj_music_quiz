@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class SoundManger : MonoBehaviour
 {
@@ -11,10 +12,12 @@ public class SoundManger : MonoBehaviour
     [Header("The use's score reach in per playlist")]
     public int totalScore;
 
+    public AudioClip myClip;
+
     //
     // private
     //
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     #endregion
 
 //==
@@ -43,6 +46,29 @@ public class SoundManger : MonoBehaviour
     private void Start()
     {
         CacheComponent();
+
+        //StartCoroutine(GetAudioClip());
+
+    }
+
+    IEnumerator GetAudioClip()
+    {
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("https://ciihuy.com/downloads/music.mp3", AudioType.MPEG))
+        {
+            yield return www.SendWebRequest();
+ 
+            if (www.isNetworkError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                myClip = DownloadHandlerAudioClip.GetContent(www);
+                audioSource.clip = myClip;
+                audioSource.Play();
+                Debug.Log("Audio is playing.");
+            }
+        }
     }
 
     private void Update()

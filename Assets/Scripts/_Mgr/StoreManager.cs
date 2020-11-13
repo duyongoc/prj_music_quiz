@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class StoreManager : MonoBehaviour
@@ -11,15 +13,11 @@ public class StoreManager : MonoBehaviour
     //  public variable
     //
     [Header("List audio of game quiz")]
-    public AudioQuiz[] listAllAudio;
-    public List<AudioClip> currentListAudio;
+    public List<AudioClip> listAllAudio = new List<AudioClip>();
 
     [Header("List Sprite of game quiz")]
     public SpriteQuiz[] listAllSprite;
     public List<Sprite> currentListSprite;
-
-    [Header("Random BG in Quiz Game")]
-    public Sprite[] arrSpriteBG;
 
     [Header("Loading json data")]
     public Text txtPlatform;
@@ -34,19 +32,23 @@ public class StoreManager : MonoBehaviour
     //  private variable
     //
     private string nameFile = "Data";
+
+    //
+    public AudioClip audioTemp; 
     #endregion
 
-//---
+    //---
 
     #region SINGLETON
     public static StoreManager s_instance;
 
     private void Awake()
     {
-        if(s_instance != null)
+        if (s_instance != null)
             return;
 #if UNITY_EDITOR
         LoadData();
+        DownloadAudioSource();
 #endif
         s_instance = this;
     }
@@ -61,7 +63,7 @@ public class StoreManager : MonoBehaviour
     #region UNiTY
     private void Start()
     {
-        
+
     }
 
     private void Update()
@@ -78,8 +80,8 @@ public class StoreManager : MonoBehaviour
         currentListQuestion = new List<questions>(playLists[int.Parse(index)].questions);
 
         // load current audio and sprite in curent playlist
-        currentListAudio = listAllAudio[int.Parse(index)].listAudio;
         currentListSprite = listAllSprite[int.Parse(index)].listSprite;
+        
     }
 
     public string GetCurrentAnswerQuestionIndex(int index)
@@ -87,9 +89,18 @@ public class StoreManager : MonoBehaviour
         return currentListQuestion[index].answerIndex;
     }
 
-    public List<AudioClip> GetCurrentListAudioQuiz()
+    public AudioClip GetAudioClipFromList(string str)
     {
-        return currentListAudio;
+        AudioClip audi = listAllAudio.Find(x => x.name == str);
+        //AudioClip audi = null;
+        if(audi == null)
+        {
+            Debug.Log(str);
+            StartCoroutine(ReDownloadAudioClip(str));
+                return null;
+        }
+
+        return audi;
     }
 
     public List<choices> GetCurrentChoicesQuestionIndex(int index)
@@ -105,13 +116,60 @@ public class StoreManager : MonoBehaviour
     }
     #endregion
 
-//---
-    #region PUBLIC FUNCTION
-    public Sprite GetRandomBackground()
+    //---
+
+    #region DOWNLOAD AUDIO
+    public void DownloadAudioSource()
     {
-        int rand = Random.Range(0, arrSpriteBG.Length);
-        return arrSpriteBG[rand];
+        for(int i = 0 ; i < playLists.Count; i++)
+        {
+            var question = playLists[i].questions;
+            for(int j = 0; j < question.Length; j++)
+            {
+                string strUrl = question[j].song.sample;
+                StartCoroutine(GetAudioClip(strUrl));
+            }
+        }
     }
+
+    IEnumerator GetAudioClip( string strUrl)
+    {
+        using (UnityWebRequest uwr = UnityWebRequestMultimedia.GetAudioClip(strUrl, AudioType.WAV))
+        {
+            yield return uwr.SendWebRequest();
+        
+            if (uwr.isNetworkError || uwr.isHttpError)
+            {
+                Debug.Log("Error while download: " + uwr.error);
+            }
+            else
+            {
+                var tmp = DownloadHandlerAudioClip.GetContent(uwr);
+                tmp.name = strUrl;
+                listAllAudio.Add(tmp);
+            }
+        }
+    }
+
+    IEnumerator ReDownloadAudioClip(string strUrl)
+    {
+        Debug.Log(strUrl);
+        using (UnityWebRequest uwr = UnityWebRequestMultimedia.GetAudioClip(strUrl, AudioType.WAV))
+        {
+            yield return uwr.SendWebRequest();
+        
+            if (uwr.isNetworkError || uwr.isHttpError)
+            {
+                Debug.Log("Error while download: " + uwr.error);
+            }
+            else
+            {
+                audioTemp = DownloadHandlerAudioClip.GetContent(uwr);
+                SoundManger.GetInstance().PlaySound(audioTemp);
+            }
+        }
+    }
+
     #endregion
 
     #region PRIVATE FUNCTION
@@ -172,8 +230,8 @@ public class StoreManager : MonoBehaviour
     {
         string str = CONFIG.pathFolder + "/" + nameFile;
         Debug.Log(str);
-        if(!Directory.Exists(str))
-        {    
+        if (!Directory.Exists(str))
+        {
             Directory.CreateDirectory(str);
         }
     }

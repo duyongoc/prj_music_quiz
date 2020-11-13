@@ -45,9 +45,6 @@ public class QuizGame : MonoBehaviour
     private SoundManger soundMgr;
 
     //
-    private List<AudioClip> listAudioQuiz;
-
-    //
     private bool hasAnswer = false;
 
     public ComChoice[] choice;
@@ -115,54 +112,40 @@ public class QuizGame : MonoBehaviour
         //
         for (int i = 0; i < arrChoice.Length; i++)
         {
+            //set animation, color for the answer       
+            var cmChoice = arrChoice[i].gameObject.GetComponent<ComChoice>();
+
             if(int.Parse(nameIndex) == i) // the answer of user
             {
-                //set animation the anser       
-                var ani = arrChoice[i].gameObject.GetComponent<Animator>();
-
-                //set color the answer
-                var img = arrChoice[i].gameObject.GetComponent<Image>();
-                img.color = Color.red;
-
-                if(int.Parse(answerIndex) == int.Parse(nameIndex))
+                cmChoice.SetColor(Color.red); // set default color
+                if(int.Parse(answerIndex) == int.Parse(nameIndex)) // user get correct answer
                 {
-                    img.color = Color.green;
-                    ani.SetTrigger("Correct");
+                    cmChoice.SetCorrectChoice();
                 }
                 else
                 {  
-                    ani.SetTrigger("Wrong");
+                    cmChoice.SetFalseChoice();
                 }
-                    
             }
             else if (int.Parse(answerIndex) == i) // the correct answer
             {
-                //set animation the anser 
-                // var ani = arrChoice[i].gameObject.GetComponent<Animator>();
-                // ani.SetTrigger("Correct");
-
-                //set color the answer
-                var img = arrChoice[i].gameObject.GetComponent<Image>();
-                img.color = Color.green;
+                cmChoice.SetColor(Color.green);
             }
             else
             {
-                SetChoiceAfterAnswer(arrChoice[i].gameObject, false);
+                SetChoiceAfterAnswer(cmChoice, false);
             }
-            
-                
         }
-
+        
         hasAnswer = true;
         scoreMgr.UpdateScoreAndQuestion();
     }
 
-    public void SetChoiceAfterAnswer(GameObject gameObject, bool value)
+    public void SetChoiceAfterAnswer(ComChoice com, bool value)
     {
         if (!value)
         {
-            var img = gameObject.GetComponent<Image>();
-            img.color = new Color(img.color.r, img.color.g, img.color.b, 0.1f);
+            com.SetOpacityTheChoice(0.1f);
         }
     }
 
@@ -211,7 +194,6 @@ public class QuizGame : MonoBehaviour
 
         // load data from storage
         storeMgr.LoadPlayListQuestion(nameBtn);
-        listAudioQuiz = storeMgr.GetCurrentListAudioQuiz();
 
         // loading question one of Quiz
         ChangeStateQuestion(EStateQuestion.One);
@@ -232,7 +214,6 @@ public class QuizGame : MonoBehaviour
             return;
         }
 
-        sceneMgr.sceneQuiz.SetRandomBG();
         LoadQuestionData((int)currentStateQuestion);
     }
 
@@ -242,13 +223,24 @@ public class QuizGame : MonoBehaviour
 
         currentChoices = storeMgr.GetCurrentChoicesQuestionIndex(indexName);
         answerIndex = storeMgr.GetCurrentAnswerQuestionIndex(indexName);
-        soundMgr.PlaySound(listAudioQuiz[indexName]);
+
+        soundMgr.PlaySound(storeMgr.GetAudioClipFromList(storeMgr.currentListQuestion[indexName].song.sample));
 
         LoadTextChoicesQuestion(indexName);
         
         foreach (GameObject ob in listQuestion)
         {
             ob.SetActive(strIndexName.Contains(ob.name));
+        }
+    }
+
+    private void LoadTextChoicesQuestion(int index)
+    {
+        arrChoice = listQuestion[index].GetComponentsInChildren<ComChoice>();
+
+        for (int i = 0; i < currentChoices.Count; i++)
+        {
+            arrChoice[i].GetComponentInChildren<ComChoice>().SetChoiceText(currentChoices[i].title);
         }
     }
 
@@ -267,8 +259,7 @@ public class QuizGame : MonoBehaviour
 
     public void Reset()
     {
-
-        //
+        //clear old list answer and restart color of it
         listIndexAnswered.Clear();
         ResetColor();
 
@@ -278,8 +269,7 @@ public class QuizGame : MonoBehaviour
             var choice = ob.GetComponentsInChildren<ComChoice>();
             foreach(ComChoice com in choice)
             {   
-                var img = com.gameObject.GetComponent<Image>();
-                img.color = new Color(img.color.r, img.color.g, img.color.b, 1f);
+                com.Reset();
             }
         }
 
@@ -302,6 +292,13 @@ public class QuizGame : MonoBehaviour
         var gridArray = allQuestion.GetComponentsInChildren<ComQuestion>();
         foreach (ComQuestion gird in gridArray)
             listQuestion.Add(gird.gameObject);
+
+        foreach (ComQuestion cQuestion in gridArray)
+        {
+            var arrChoice = cQuestion.GetComponentsInChildren<ComChoice>();
+            foreach(ComChoice ch in arrChoice)
+                ch.CacheComponent();
+        }
     }
 
     private void LoadTextButtonPlayList()
@@ -313,17 +310,6 @@ public class QuizGame : MonoBehaviour
             listButtonPlayList[i++].GetComponentInChildren<Text>().text = li.playlist;
         }
 
-    }
-
-    private void LoadTextChoicesQuestion(int index)
-    {
-        arrChoice = listQuestion[index].GetComponentsInChildren<ComChoice>();
-
-        for (int i = 0; i < currentChoices.Count; i++)
-        {
-            //Debug.Log(currentChoices[i].title);
-            arrChoice[i].GetComponentInChildren<Text>().text = currentChoices[i].title;
-        }
     }
     #endregion
 }

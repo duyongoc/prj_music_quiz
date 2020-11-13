@@ -34,11 +34,4 @@ public class SceneQuiz : StateScene
     }
     #endregion
 
-    #region PUBLIC FUNCTION
-    public void SetRandomBG()
-    {
-        bgImage.sprite = StoreManager.GetInstance().GetRandomBackground();
-    }
-    #endregion
-
 }
