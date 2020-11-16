@@ -46,34 +46,10 @@ public class SoundManger : MonoBehaviour
     private void Start()
     {
         CacheComponent();
-
-        //StartCoroutine(GetAudioClip());
-
-    }
-
-    IEnumerator GetAudioClip()
-    {
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("https://ciihuy.com/downloads/music.mp3", AudioType.MPEG))
-        {
-            yield return www.SendWebRequest();
- 
-            if (www.isNetworkError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                myClip = DownloadHandlerAudioClip.GetContent(www);
-                audioSource.clip = myClip;
-                audioSource.Play();
-                Debug.Log("Audio is playing.");
-            }
-        }
     }
 
     private void Update()
     {
-
     }
     #endregion
 

@@ -16,8 +16,7 @@ public class StoreManager : MonoBehaviour
     public List<AudioClip> listAllAudio = new List<AudioClip>();
 
     [Header("List Sprite of game quiz")]
-    public SpriteQuiz[] listAllSprite;
-    public List<Sprite> currentListSprite;
+    public List<Sprite> listAllSprite = new List<Sprite>();
 
     [Header("Loading json data")]
     public Text txtPlatform;
@@ -32,9 +31,12 @@ public class StoreManager : MonoBehaviour
     //  private variable
     //
     private string nameFile = "Data";
+    private AudioClip targetAudioClip;
 
     //
-    public AudioClip audioTemp; 
+    public Image img;
+    private Sprite targetSprite;
+
     #endregion
 
     //---
@@ -46,9 +48,12 @@ public class StoreManager : MonoBehaviour
     {
         if (s_instance != null)
             return;
+        // hardcode for test purpose
 #if UNITY_EDITOR
         LoadData();
-        DownloadAudioSource();
+
+        DownloadAudioResoures();
+        DownloadTextureResources();
 #endif
         s_instance = this;
     }
@@ -79,28 +84,11 @@ public class StoreManager : MonoBehaviour
         idPlayListQuiz = playLists[int.Parse(index)].id;
         currentListQuestion = new List<questions>(playLists[int.Parse(index)].questions);
 
-        // load current audio and sprite in curent playlist
-        currentListSprite = listAllSprite[int.Parse(index)].listSprite;
-        
     }
 
     public string GetCurrentAnswerQuestionIndex(int index)
     {
         return currentListQuestion[index].answerIndex;
-    }
-
-    public AudioClip GetAudioClipFromList(string str)
-    {
-        AudioClip audi = listAllAudio.Find(x => x.name == str);
-        //AudioClip audi = null;
-        if(audi == null)
-        {
-            Debug.Log(str);
-            StartCoroutine(ReDownloadAudioClip(str));
-                return null;
-        }
-
-        return audi;
     }
 
     public List<choices> GetCurrentChoicesQuestionIndex(int index)
@@ -118,58 +106,141 @@ public class StoreManager : MonoBehaviour
 
     //---
 
-    #region DOWNLOAD AUDIO
-    public void DownloadAudioSource()
+    #region GET DOWNLOAD SOUNDS
+    public AudioClip GetAudioClipFromList(string str)
     {
-        for(int i = 0 ; i < playLists.Count; i++)
+        //Debug.Log(str);
+        AudioClip audi = listAllAudio.Find(x => x.name == str);
+        if (audi == null)
+        {
+            //Trying redownload reosoures
+            StartCoroutine(RedownloadAndPlayAudioClip(str));
+
+            // When redownload audio still faied. 
+            // So hardcode loading them from resoures while find another way better
+            audi = Resources.Load<AudioClip>("Sounds/" + str);
+        }
+
+        return audi;
+    }
+
+    public void DownloadAudioResoures()
+    {
+        for (int i = 0; i < playLists.Count; i++)
         {
             var question = playLists[i].questions;
-            for(int j = 0; j < question.Length; j++)
+            for (int j = 0; j < question.Length; j++)
             {
                 string strUrl = question[j].song.sample;
-                StartCoroutine(GetAudioClip(strUrl));
+                string strTitle = question[j].song.title;
+
+                StartCoroutine(GetAudioClip(strUrl, strTitle, (response) =>
+                {
+                    targetAudioClip = response;
+                    targetAudioClip.name = strTitle;
+                    listAllAudio.Add(targetAudioClip);
+                }));
             }
         }
     }
 
-    IEnumerator GetAudioClip( string strUrl)
+    IEnumerator GetAudioClip(string strUrl, string strTitle, System.Action<AudioClip> callback)
     {
-        using (UnityWebRequest uwr = UnityWebRequestMultimedia.GetAudioClip(strUrl, AudioType.WAV))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(strUrl, AudioType.WAV))
         {
-            yield return uwr.SendWebRequest();
-        
-            if (uwr.isNetworkError || uwr.isHttpError)
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
             {
-                Debug.Log("Error while download: " + uwr.error);
+                Debug.Log(www.error);
             }
             else
             {
-                var tmp = DownloadHandlerAudioClip.GetContent(uwr);
-                tmp.name = strUrl;
-                listAllAudio.Add(tmp);
+                if (www.isDone)
+                {
+                    var audio = DownloadHandlerAudioClip.GetContent(www);
+                    callback(audio);
+                }
             }
         }
     }
 
-    IEnumerator ReDownloadAudioClip(string strUrl)
+    IEnumerator RedownloadAndPlayAudioClip(string strUrl)
     {
-        Debug.Log(strUrl);
-        using (UnityWebRequest uwr = UnityWebRequestMultimedia.GetAudioClip(strUrl, AudioType.WAV))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(strUrl, AudioType.WAV))
         {
-            yield return uwr.SendWebRequest();
-        
-            if (uwr.isNetworkError || uwr.isHttpError)
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
             {
-                Debug.Log("Error while download: " + uwr.error);
+                Debug.Log(www.error);
             }
             else
             {
-                audioTemp = DownloadHandlerAudioClip.GetContent(uwr);
-                SoundManger.GetInstance().PlaySound(audioTemp);
+                targetAudioClip = DownloadHandlerAudioClip.GetContent(www);
+                SoundManger.GetInstance().PlaySound(targetAudioClip);
+            }
+        }
+    }
+    #endregion
+
+    #region GET DOWNLOAD IMAGES
+    public void DownloadTextureResources()
+    {
+        for (int i = 0; i < playLists.Count; i++)
+        {
+            var question = playLists[i].questions;
+            for (int j = 0; j < question.Length; j++)
+            {
+                string strUrl = question[j].song.picture;
+                string strTitle = question[j].song.title;
+
+                StartCoroutine(GetTextureRequest(strUrl, strTitle, (response) =>
+                {
+                    targetSprite = response;
+                    targetSprite.name = strTitle;
+                    listAllSprite.Add(targetSprite);
+                }));
             }
         }
     }
 
+    public Sprite GetSpiteFromList(string str)
+    {
+        Debug.Log(str);
+        Sprite sprite = listAllSprite.Find(x => x.name == str);
+        if (sprite == null)
+        {
+            // When download Sprite failed. 
+            // So hardcode loading them from resoures while find another way better
+            sprite = Resources.Load<Sprite>("MusicPic/" + str);
+        }
+
+        return sprite;
+    }
+
+    IEnumerator GetTextureRequest(string url, string strTitle, System.Action<Sprite> callback)
+    {
+        using (var www = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                if (www.isDone)
+                {
+                    var texture = DownloadHandlerTexture.GetContent(www);
+                    var rect = new Rect(0, 0, texture.width, texture.height);
+                    var sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+                    callback(sprite);
+                }
+            }
+        }
+    }
     #endregion
 
     #region PRIVATE FUNCTION
@@ -191,22 +262,6 @@ public class StoreManager : MonoBehaviour
         // make gameobject immortal during game on.
         LoadDataResources();
         DontDestroyOnLoad(this);
-    }
-
-    private void LoadDataAndroid()
-    {
-        CreatePathFolder();
-        LoadDataJson(nameFile);
-    }
-
-    private void LoadDataIOS()
-    {
-        LoadDataJson(nameFile);
-    }
-
-    private void LoadDataWindows()
-    {
-        LoadDataJson(nameFile);
     }
 
     private void LoadDataResources()

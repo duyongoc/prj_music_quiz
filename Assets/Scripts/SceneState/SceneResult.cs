@@ -13,9 +13,12 @@ public class SceneResult : StateScene
     public QuizGame quizGame;
 
     [Header("Load text in Result Question Choise")]
-    public Transform allResult;
-    public List<GameObject> listResult;
+    public Transform allResultTransform;
+    public List<GameObject> listResultTransform;
     public List<questions> listResultQuiz;
+
+    [Header("Icon Show result")]
+    public IconShow[] arrIconShow;
 
     [Header("Show result score of user")]
     public Text txtScore;
@@ -39,12 +42,12 @@ public class SceneResult : StateScene
         // show all question and answer result in scene
         LoadResultQuestion();
         LoadTextScoreResult();
+        
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
-
 
     }
 
@@ -77,59 +80,44 @@ public class SceneResult : StateScene
 
     }
 
-    public void LoadTheChoiceAnswered(choices[] arrChoice, int index, string answerIndex)
-    {
-        var arrQuestion = listResult[index].GetComponentsInChildren<ComChoice>();
-        for (int i = 0; i < arrChoice.Length; i++)
-        {
-            if (int.Parse(answerIndex) == i)
-            {
-                var img = arrQuestion[i].GetComponent<Image>();
-                img.color = Color.red;
-            }
-        }
-    }
-
     public void LoadTheChoiceResult(choices[] arrChoice, int index, string answerIndex, string resultIndex)
     {
-        var arrQuestion = listResult[index].GetComponentsInChildren<ComChoice>();
-        listResult[index].GetComponent<Image>().sprite = storeMgr.currentListSprite[index];
+        var arrQuestion = listResultTransform[index].GetComponentsInChildren<ComChoice>();
+        arrIconShow[index].GetComponent<Image>().sprite = storeMgr.GetSpiteFromList(listResultQuiz[index].song.title);
 
         for (int i = 0; i < arrChoice.Length; i++)
         {
-            arrQuestion[i].GetComponentInChildren<Text>().text = arrChoice[i].title;
+            var cmChoice = arrQuestion[i].gameObject.GetComponent<ComChoice>();
+            cmChoice.SetTitleText(arrChoice[i].title);
 
             if (i == int.Parse(answerIndex))
             {
-                var bor = arrQuestion[i].gameObject.GetComponentInChildren<ComBorder>();
+                var bor = cmChoice.GetComponentInChildren<ComBorder>();
                 bor.gameObject.GetComponent<Image>().enabled = true;
             }
-
             // result the question
             if (i == int.Parse(resultIndex))
             {
-                var img = arrQuestion[i].gameObject.GetComponent<Image>();
-                img.color = Color.green;
+                cmChoice.SetColor(new Color(55/255f, 175/255f, 55/255f, 1));
             }
             // the question what user answered 
             else if (i == int.Parse(answerIndex))
             {
-                var img = arrQuestion[i].gameObject.GetComponent<Image>();
-                img.color = Color.red;
+                cmChoice.SetColor(new Color(195/255f, 35/255f, 35/255f, 1));
             }
             else
             {
-                SetFalseTheAnswer(arrQuestion[i].gameObject, false);
+                SetFalseTheAnswer(cmChoice, false);
             }
         }
     }
 
-    public void SetFalseTheAnswer(GameObject go, bool value)
+    public void SetFalseTheAnswer(ComChoice com, bool value)
     {
         if (!value)
         {
-            var img = go.GetComponent<Image>();
-            img.color = new Color(img.color.r, img.color.g, img.color.b, 0.2f);
+            com.SetColor(Color.black);
+            com.SetOpacity(0.65f);
         }
     }
     #endregion
@@ -141,17 +129,27 @@ public class SceneResult : StateScene
         scoreMgr = ScoreManager.GetInstance();
         storeMgr = StoreManager.GetInstance();
 
-        //cache component 
-        var gridArray = allResult.GetComponentsInChildren<ComQuestion>();
+        //
+        arrIconShow = allResultTransform.GetComponentsInChildren<IconShow>();
+
+        //cache component on result
+        var gridArray = allResultTransform.GetComponentsInChildren<ComQuestion>();
         foreach (ComQuestion gird in gridArray)
-            listResult.Add(gird.gameObject);
+            listResultTransform.Add(gird.gameObject);
+
+        foreach (ComQuestion cQuestion in gridArray)
+        {
+            var arrChoice = cQuestion.GetComponentsInChildren<ComChoice>();
+            foreach(ComChoice ch in arrChoice)
+                ch.CacheComponent();
+        }
     }
 
     public void ResetColor()
     {
-        for (int i = 0; i < listResult.Count; i++)
+        for (int i = 0; i < listResultTransform.Count; i++)
         {
-            var arrQuestion = listResult[i].GetComponentsInChildren<ComChoice>();
+            var arrQuestion = listResultTransform[i].GetComponentsInChildren<ComChoice>();
             for (int j = 0; j < arrQuestion.Length; j++)
             {
                 var bor = arrQuestion[j].gameObject.GetComponentInChildren<ComBorder>();

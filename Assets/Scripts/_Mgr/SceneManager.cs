@@ -25,7 +25,6 @@ public class SceneManager : MonoBehaviour
             return;
         s_instance = this;
 
-        //RenderSettings.skybox = skybox;
     }
     #endregion
 
@@ -36,6 +35,7 @@ public class SceneManager : MonoBehaviour
         sceneResult.gameObject.SetActive(true);
 
         ChangeState(sceneWelcome);
+        
     }
 
     private void FixedUpdate()
@@ -68,9 +68,6 @@ public class SceneManager : MonoBehaviour
         sceneQuiz.gameObject.SetActive(panelName.Contains(sceneQuiz.name));
         sceneResult.gameObject.SetActive(panelName.Contains(sceneResult.name));
         sceneWelcome.gameObject.SetActive(panelName.Contains(sceneWelcome.name));
-        // m_sceneTutorial.gameObject.SetActive(panelName.Contains(m_sceneTutorial.name));
-        // m_sceneMission.gameObject.SetActive(panelName.Contains(m_sceneMission.name));
-        // m_sceneShop.gameObject.SetActive(panelName.Contains(m_sceneShop.name));
     }
 
     public static SceneManager GetInstance()

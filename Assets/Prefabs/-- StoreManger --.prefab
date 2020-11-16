@@ -44,37 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listAllAudio: []
-  currentListAudio: []
-  listAllSprite:
-  - listSprite:
-    - {fileID: 21300000, guid: 015178aa261e0b944b1c2eab6104dc96, type: 3}
-    - {fileID: 21300000, guid: 276ee6d6b8f066c40b61d9a868011cce, type: 3}
-    - {fileID: 21300000, guid: e81a4af98bece0e43b76a5e950d73464, type: 3}
-    - {fileID: 21300000, guid: 7808c61f339d9ed49a7944ead5e3c11c, type: 3}
-    - {fileID: 21300000, guid: e80830c450d7fe24fb029bfd521aedcc, type: 3}
-  - listSprite:
-    - {fileID: 21300000, guid: d7a59645a0d59c248a65424321240037, type: 3}
-    - {fileID: 21300000, guid: 90ef8a82b6438cf4f8c000167aeb987f, type: 3}
-    - {fileID: 21300000, guid: 7b7860df119ee3241b46f26778831baf, type: 3}
-    - {fileID: 21300000, guid: ea4f952b5ab06a141a88100172dca3fb, type: 3}
-    - {fileID: 21300000, guid: 4847cb426579e884c8096a7cb5dfabff, type: 3}
-  - listSprite:
-    - {fileID: 21300000, guid: efa44a54a69c7b840a1d3454b2cd1b12, type: 3}
-    - {fileID: 21300000, guid: 1df674c6e6072184ebd41b63acd5a9af, type: 3}
-    - {fileID: 21300000, guid: c613928b2342d2f499b33acc54bbd93c, type: 3}
-    - {fileID: 21300000, guid: aa8a1c9560edd354b91f230c73b2aa27, type: 3}
-    - {fileID: 21300000, guid: 52a7a7d011068b84cb97ea90054c0d20, type: 3}
-  currentListSprite: []
-  arrSpriteBG:
-  - {fileID: 21300000, guid: f218ea3a06dcdaa4f99fbb5a3f05a362, type: 3}
-  - {fileID: 21300000, guid: f206892067b8e7446849258c3cf26b00, type: 3}
-  - {fileID: 21300000, guid: e5392923b672bc04db9255cb193d7a33, type: 3}
-  - {fileID: 21300000, guid: 502e3b222569dc140bfd5ce9d4327fbc, type: 3}
-  - {fileID: 21300000, guid: 2632b637d2ce70f4bbb23e42b5358d6c, type: 3}
-  - {fileID: 21300000, guid: 7a98c7aae697cbc439ac2b7bfa0aad7c, type: 3}
-  - {fileID: 21300000, guid: 4438eebd2cbb24144acd3955c85eda78, type: 3}
-  - {fileID: 21300000, guid: 6ed3ac162bb160e4b91e410c1bda22dc, type: 3}
+  listAllSprite: []
   txtPlatform: {fileID: 0}
   playLists: []
   idPlayListQuiz: 
   currentListQuestion: []
+  img: {fileID: 0}
