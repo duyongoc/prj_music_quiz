@@ -34,4 +34,14 @@ public class SceneQuiz : StateScene
     }
     #endregion
 
+    public void GetRandomBackroundColor()
+    {
+        var randR = Random.Range(50, 150);
+        var randB = Random.Range(50, 150);
+        var randG = Random.Range(50, 150);
+
+        Color randColor = new Color( randR/255f, randB/ 255f, randG/255f, 1f);
+        bgImage.color = randColor;
+    }
+
 }

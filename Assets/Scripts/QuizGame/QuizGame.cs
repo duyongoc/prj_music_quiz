@@ -94,7 +94,7 @@ public class QuizGame : MonoBehaviour
 
         string nameIndex = EventSystem.current.currentSelectedGameObject.name;
         listIndexAnswered.Add(int.Parse(nameIndex));
-    
+
         CheckAnswerTheQuestion(nameIndex);
         StartCoroutine("ChangeStateQuestionWithDelay", timeDelayPerQuestion);
     }
@@ -148,7 +148,7 @@ public class QuizGame : MonoBehaviour
     {
         if (!value)
         {
-            com.SetOpacity(0.1f);
+            com.SetOpacity(0.35f);
         }
     }
 
@@ -217,6 +217,7 @@ public class QuizGame : MonoBehaviour
             return;
         }
 
+        sceneMgr.sceneQuiz.GetRandomBackroundColor();
         LoadQuestionData((int)currentStateQuestion);
     }
 

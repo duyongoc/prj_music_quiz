@@ -43,8 +43,8 @@ public class ScoreManager : MonoBehaviour
     #region UNITY
     private void Start()
     {
-        txtScore.text = score.ToString();
-        txtQuestion.text = "Question: " + question + "/" + totalQuestion;
+        txtScore.text = "Correct: " + score.ToString();
+        txtQuestion.text = "Question: " + question + "/" + totalQuestion + ".";
     }
 
     private void Update()
@@ -66,8 +66,8 @@ public class ScoreManager : MonoBehaviour
         if(question < 5)
             question++;
 
-        txtScore.text = score.ToString();
-        txtQuestion.text = "Question: " + question + "/" + totalQuestion;
+        txtScore.text = "Correct: " + score.ToString();
+        txtQuestion.text = "Question: " + question + "/" + totalQuestion + ".";
     }
 
     public int GetScore()
@@ -80,8 +80,8 @@ public class ScoreManager : MonoBehaviour
         score = 0;
         question = 0;
 
-        txtScore.text = score.ToString();
-        txtQuestion.text = "Question: " + question + "/" + totalQuestion;
+        txtScore.text = "Correct: " + score.ToString();
+        txtQuestion.text = "Question: " + question + "/" + totalQuestion + ".";
     }
     #endregion
 

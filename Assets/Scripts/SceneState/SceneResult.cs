@@ -63,7 +63,7 @@ public class SceneResult : StateScene
     #region PUBLIC FUNCTION
     public void LoadTextScoreResult()
     {
-        txtScore.text = scoreMgr.score.ToString() + "/" + scoreMgr.totalQuestion.ToString();
+        txtScore.text = "Correct: " + scoreMgr.score.ToString() + "/" + scoreMgr.totalQuestion.ToString();
     }
 
     public void LoadResultQuestion()

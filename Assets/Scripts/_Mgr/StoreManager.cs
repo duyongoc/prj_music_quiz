@@ -207,7 +207,7 @@ public class StoreManager : MonoBehaviour
 
     public Sprite GetSpiteFromList(string str)
     {
-        Debug.Log(str);
+        // Debug.Log(str);
         Sprite sprite = listAllSprite.Find(x => x.name == str);
         if (sprite == null)
         {
