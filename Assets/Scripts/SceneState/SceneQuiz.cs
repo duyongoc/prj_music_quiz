@@ -13,6 +13,8 @@ public class SceneQuiz : StateScene
     public Image bgImage;
     #endregion
 
+//==
+
     #region STATE
     public override void StartState()
     {
@@ -25,7 +27,6 @@ public class SceneQuiz : StateScene
     {
         base.UpdateState();
         
-       
     }
 
     public override void EndState()
@@ -34,6 +35,9 @@ public class SceneQuiz : StateScene
     }
     #endregion
 
+//==
+
+    #region PUBLIC FUNCTION
     public void GetRandomBackroundColor()
     {
         var randR = Random.Range(50, 150);
@@ -43,5 +47,6 @@ public class SceneQuiz : StateScene
         Color randColor = new Color( randR/255f, randB/ 255f, randG/255f, 1f);
         bgImage.color = randColor;
     }
+    #endregion
 
 }

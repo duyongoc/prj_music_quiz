@@ -34,9 +34,7 @@ public class StoreManager : MonoBehaviour
     private AudioClip targetAudioClip;
 
     //
-    public Image img;
     private Sprite targetSprite;
-
     #endregion
 
     //---
@@ -116,8 +114,8 @@ public class StoreManager : MonoBehaviour
             //Trying redownload reosoures
             StartCoroutine(RedownloadAndPlayAudioClip(str));
 
-            // When redownload audio still faied. 
-            // So hardcode loading them from resoures while find another way better
+            // When redownload audio still faied. So hardcode loading them from resoures folder
+            // Currently we use this bad solution while find another way better
             audi = Resources.Load<AudioClip>("Sounds/" + str);
         }
 
@@ -211,8 +209,8 @@ public class StoreManager : MonoBehaviour
         Sprite sprite = listAllSprite.Find(x => x.name == str);
         if (sprite == null)
         {
-            // When download Sprite failed. 
-            // So hardcode loading them from resoures while find another way better
+            // When download Sprite failed. So hardcode loading them from resoures folder
+            // Currently we use this bad solution while find another way better
             sprite = Resources.Load<Sprite>("MusicPic/" + str);
         }
 
@@ -279,16 +277,6 @@ public class StoreManager : MonoBehaviour
 
         // save data json to store manager
         playLists = new List<Playlist>(listData);
-    }
-
-    private void CreatePathFolder()
-    {
-        string str = CONFIG.pathFolder + "/" + nameFile;
-        Debug.Log(str);
-        if (!Directory.Exists(str))
-        {
-            Directory.CreateDirectory(str);
-        }
     }
     #endregion
 }

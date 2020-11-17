@@ -36,7 +36,7 @@ public class SceneResult : StateScene
         base.EndState();
         Owner.SetActivePanelScene(this.name);
 
-        // GetComponent what we need in state scene
+        // GetComponent what we need in state 
         CacheComponent();
 
         // show all question and answer result in scene
@@ -92,8 +92,7 @@ public class SceneResult : StateScene
 
             if (i == int.Parse(answerIndex))
             {
-                var bor = cmChoice.GetComponentInChildren<ComBorder>();
-                bor.gameObject.GetComponent<Image>().enabled = true;
+                cmChoice.SetActiveBorder(true);
             }
             // result the question
             if (i == int.Parse(resultIndex))
@@ -152,11 +151,9 @@ public class SceneResult : StateScene
             var arrQuestion = listResultTransform[i].GetComponentsInChildren<ComChoice>();
             for (int j = 0; j < arrQuestion.Length; j++)
             {
-                var bor = arrQuestion[j].gameObject.GetComponentInChildren<ComBorder>();
-                bor.gameObject.GetComponent<Image>().enabled = false;
-
-                var img = arrQuestion[j].GetComponent<Image>();
-                img.color = Color.white;
+                var ch = arrQuestion[j].gameObject.GetComponent<ComChoice>();
+                ch.SetActiveBorder(false);
+                ch.SetColor(Color.white);
             }
         }
     }
@@ -170,7 +167,7 @@ public class SceneResult : StateScene
 
     public void Reset()
     {
-        //
+        // reset parameter
         scoreMgr.Reset();
         quizGame.Reset();
         ResetColor();

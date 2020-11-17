@@ -2797,7 +2797,6 @@ MonoBehaviour:
   arrChoice: []
   listIndexAnswered: 
   currentStateQuestion: 0
-  choice: []
 --- !u!1 &375471903
 GameObject:
   m_ObjectHideFlags: 0
@@ -4773,8 +4772,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 246778229}
   m_HandleRect: {fileID: 246778227}
   m_Direction: 3
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15451,7 +15450,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalScore: 0
-  myClip: {fileID: 0}
   audioSource: {fileID: 0}
 --- !u!82 &2040973605
 AudioSource:

@@ -49,8 +49,6 @@ public class QuizGame : MonoBehaviour
 
     //
     private bool hasAnswer = false;
-
-    public ComChoice[] choice;
     #endregion
 
 
@@ -86,7 +84,23 @@ public class QuizGame : MonoBehaviour
     }
     #endregion
 
-    #region ANSWER THE QUESTION
+//==
+
+    #region EVENT BUTTONS
+    // Handle event when user press button playlist
+    public void OnPressButtonPlayList()
+    {
+        string nameBtn = EventSystem.current.currentSelectedGameObject.name;
+
+        // load data from storage
+        storeMgr.LoadPlayListQuestion(nameBtn);
+
+        // loading question one of Quiz
+        ChangeStateQuestion(EStateQuestion.One);
+        sceneMgr.ChangeState(sceneMgr.sceneQuiz);
+    }
+
+    // Handle event when user press button answer the question
     public void OnPressButtonAnswer()
     {
         if(hasAnswer)
@@ -98,7 +112,11 @@ public class QuizGame : MonoBehaviour
         CheckAnswerTheQuestion(nameIndex);
         StartCoroutine("ChangeStateQuestionWithDelay", timeDelayPerQuestion);
     }
+    #endregion 
 
+//==
+
+    #region ANSWER THE QUESTION
     public void CheckAnswerTheQuestion(string nameIndex)
     {
         // correct the answer, plus core for user
@@ -114,14 +132,16 @@ public class QuizGame : MonoBehaviour
           
         //
         for (int i = 0; i < arrChoice.Length; i++)
-        {
-            //set animation, color for the answer       
+        { 
             var cmChoice = arrChoice[i].gameObject.GetComponent<ComChoice>();
 
-            if(int.Parse(nameIndex) == i) // the answer of user
+            if(int.Parse(nameIndex) == i) // the answer of user 
             {
-                cmChoice.SetColor(Color.red); // set default color
-                if(int.Parse(answerIndex) == int.Parse(nameIndex)) // user get correct answer
+                //  set default color is red 
+                cmChoice.SetColor(Color.red); 
+
+                //  when user get correct the answer - trigger animation
+                if(int.Parse(answerIndex) == int.Parse(nameIndex)) 
                 {
                     cmChoice.SetCorrectChoice();
                 }
@@ -130,13 +150,13 @@ public class QuizGame : MonoBehaviour
                     cmChoice.SetFalseChoice();
                 }
             }
-            else if (int.Parse(answerIndex) == i) // the correct answer
+            else if (int.Parse(answerIndex) == i) // change color of the correct answer
             {
                 cmChoice.SetColor(Color.green);
             }
             else
             {
-                SetChoiceAfterAnswer(cmChoice, false);
+                SetChoiceAfterAnswer(cmChoice, false); // set opacity for another question
             }
         }
         
@@ -152,15 +172,7 @@ public class QuizGame : MonoBehaviour
         }
     }
 
-    IEnumerator ChangeStateQuestionWithDelay(float timer)
-    {
-        yield return new WaitForSeconds(timer);
-
-        hasAnswer = false;
-        ChangeStateQuestion(LoadNextQuestion());
-    }
-
-    public EStateQuestion LoadNextQuestion()
+    public EStateQuestion LoadNextStateQuestion()
     {
         switch (currentStateQuestion)
         {
@@ -190,22 +202,6 @@ public class QuizGame : MonoBehaviour
 
 //== 
 
-    #region EVENT BUTTONS
-    public void OnPressButtonPlayList()
-    {
-        string nameBtn = EventSystem.current.currentSelectedGameObject.name;
-
-        // load data from storage
-        storeMgr.LoadPlayListQuestion(nameBtn);
-
-        // loading question one of Quiz
-        ChangeStateQuestion(EStateQuestion.One);
-        sceneMgr.ChangeState(sceneMgr.sceneQuiz);
-    }
-    #endregion 
-
-//==
-
     #region LOADING QUESTION
     public void ChangeStateQuestion(EStateQuestion newState)
     {
@@ -221,13 +217,23 @@ public class QuizGame : MonoBehaviour
         LoadQuestionData((int)currentStateQuestion);
     }
 
+    IEnumerator ChangeStateQuestionWithDelay(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+
+        hasAnswer = false;
+        ChangeStateQuestion(LoadNextStateQuestion());
+    }
+
     public void LoadQuestionData(int indexName)
     {
         string strIndexName = indexName.ToString();
 
+        // Get current list with index from the list of storeMGr
         currentChoices = storeMgr.GetCurrentChoicesQuestionIndex(indexName);
         answerIndex = storeMgr.GetCurrentAnswerQuestionIndex(indexName);
 
+        // Get sound and texture of question from data download
         soundMgr.PlaySound(storeMgr.GetAudioClipFromList(storeMgr.currentListQuestion[indexName].song.title));
         iconOfSong.sprite = storeMgr.GetSpiteFromList(storeMgr.currentListQuestion[indexName].song.title);
 
@@ -277,7 +283,6 @@ public class QuizGame : MonoBehaviour
                 com.Reset();
             }
         }
-
     }
     #endregion
 
@@ -311,9 +316,9 @@ public class QuizGame : MonoBehaviour
     {
         int i = 0;
         var arr = storeMgr.playLists;
-        foreach (Playlist li in arr)
+        foreach (Playlist plist in arr)
         {
-            listButtonPlayList[i++].GetComponentInChildren<Text>().text = li.playlist;
+            listButtonPlayList[i++].GetComponentInChildren<Text>().text = plist.playlist;
         }
 
     }

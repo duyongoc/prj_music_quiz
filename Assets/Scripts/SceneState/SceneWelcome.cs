@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class SceneWelcome : StateScene
 {
-    
+    #region FIELDS
+    //
+    //  public
+    //
     public AudioClip audi;
+    #endregion
+
+//==
 
     #region STATE
     public override void StartState()
@@ -20,14 +26,12 @@ public class SceneWelcome : StateScene
     {
         base.UpdateState();
         
-        
     }
 
     public override void EndState()
     {
         base.EndState();
 
-       
     }
     #endregion
 }

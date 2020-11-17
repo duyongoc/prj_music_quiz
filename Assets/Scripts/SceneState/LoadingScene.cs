@@ -7,15 +7,24 @@ using UnityEngine.SceneManagement;
 public class LoadingScene : MonoBehaviour
 {
     #region FIELDS
+    //
+    //  public
+    //
+    [Header("Slider loading...")]
     [SerializeField]private Slider sliderLoading = default;
 
     [Header("Load scene with delay time")]
     public float timeDelay = 2f;
     public float timeProcess = 0.1f;
 
+    //
+    //  private
+    //
     private float timer = 0f;
     private float timeTmp = 0;
     #endregion
+
+//==
 
     #region UNTIY
     private void Awake()
@@ -31,8 +40,10 @@ public class LoadingScene : MonoBehaviour
         StartCoroutine(LoadSceneWithDelay(1, timer, timeProcess));
     }
     #endregion
-    
 
+//==
+    
+    #region PUBLIC FUNCTION
     IEnumerator LoadScene(int index)
     {
         AsyncOperation async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index);
@@ -66,5 +77,6 @@ public class LoadingScene : MonoBehaviour
         }
         
     }
+    #endregion
 
 }

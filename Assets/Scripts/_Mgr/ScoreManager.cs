@@ -7,6 +7,9 @@ public class ScoreManager : MonoBehaviour
 {
     
     #region FIELDS
+    //
+    //  public 
+    //
     [Header("The use's score reach in per playlist")]
     public int score = 0;
 
@@ -17,6 +20,10 @@ public class ScoreManager : MonoBehaviour
     [Header("Show current score / total score")]
     public Text txtQuestion;
     public Text txtScore;
+
+    //
+    //  private
+    //
     #endregion
 
 //==

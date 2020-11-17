@@ -12,8 +12,6 @@ public class SoundManger : MonoBehaviour
     [Header("The use's score reach in per playlist")]
     public int totalScore;
 
-    public AudioClip myClip;
-
     //
     // private
     //
